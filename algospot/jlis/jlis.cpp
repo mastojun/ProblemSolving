@@ -50,7 +50,7 @@ int main()
 	{
 		scanf("%d %d", &n, &m);
 		for(int i = 1; i <= n; i++) scanf("%d", nVector+i);
-		for(int i = 1; i <= n; i++) scanf("%d", mVector+i);
+		for(int i = 1; i <= m; i++) scanf("%d", mVector+i);
 		
 		memset(dp, -1, sizeof(dp));
 		printf("%d\n", max(solve(0, 0, 0), solve(0, 0, 1)));
