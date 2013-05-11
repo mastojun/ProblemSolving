@@ -18,11 +18,6 @@ bool isMatching(int wi, int fi)
 	{
 		return fi >= filename.length();
 	}
-	if(fi >= filename.length())
-	{
-		while(wi < wildcard.length()) if(wildcard[wi++] != '*') return false;
-		return true;
-	}
 
 	int& ret = dp[wi][fi];
 
@@ -30,15 +25,17 @@ bool isMatching(int wi, int fi)
 
 	ret = false;
 
-	if(wildcard[wi] == '?' || wildcard[wi] == filename[fi])
+	if(fi >= filename.length())
+	{
+		if(wildcard[wi] == '*') ret = isMatching(wi+1, fi);
+	}
+	else if(wildcard[wi] == '?' || wildcard[wi] == filename[fi])
 	{
 		ret = isMatching(wi+1, fi+1);
 	}
 	else if(wildcard[wi] == '*')
 	{
-		ret = isMatching(wi, fi+1);
-		ret = ret || isMatching(wi+1, fi); 
-		ret = ret || isMatching(wi+1, fi+1);
+		ret = isMatching(wi, fi+1) ||  isMatching(wi+1, fi); 
 	}
 
 	return ret;
