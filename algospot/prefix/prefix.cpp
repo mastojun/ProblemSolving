@@ -21,7 +21,7 @@ struct Node
 };
 
 Node head;
-Node nodePool[60000];
+Node nodePool[600001];
 int nodePoolIdx;
 
 Node* getNode()
