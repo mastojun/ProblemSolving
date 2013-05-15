@@ -24,23 +24,20 @@ struct Node
 };
 
 Node head;
+Node nodePool[600000];
+int nodePoolIdx;
 
-void initNode(Node* node)
+Node* getNode()
 {
-	if(node == NULL){return;}
-
-	node->counter = 0;
-	for(int i = 0; i < 26; i++){
-		initNode(node->next[i]);
-		delete node->next[i];
-		node->next[i] = NULL;
-	}
+	nodePool[nodePoolIdx].counter = 0;
+	memset(nodePool[nodePoolIdx].next, 0, sizeof(nodePool[nodePoolIdx].next));
+	return &nodePool[nodePoolIdx++];
 }
 
 void init()
 {
 	memset(resultCounter, 0, sizeof(resultCounter));
-	initNode(&head);
+	nodePoolIdx = 0;
 }
 
 void updateResult(char* str, int length, int counter)
@@ -69,7 +66,7 @@ void insert(Node* node, char* str, int idx)
 	int nodeIdx = str[idx] - 'a';
 
 	if(node->next[nodeIdx] == NULL){
-		node->next[nodeIdx] = new Node();
+		node->next[nodeIdx] = getNode();
 	}
 
 	insert(node->next[nodeIdx], str, idx+1);
