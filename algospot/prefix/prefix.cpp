@@ -7,8 +7,8 @@ using namespace std;
 
 int c, n, m;
 
-char resultSet[200][201];
-int resultCounter[200];
+char resultSet[201][201];
+int resultCounter[201];
 
 struct Node
 {
