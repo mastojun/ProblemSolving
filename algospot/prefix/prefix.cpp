@@ -17,9 +17,6 @@ struct Node
 
 	Node(){
 		counter = 0;
-		for(int i = 0; i < 26; i++){
-			next[i] = NULL;
-		}
 	}
 };
 
@@ -38,20 +35,17 @@ void init()
 {
 	memset(resultCounter, 0, sizeof(resultCounter));
 	nodePoolIdx = 0;
+	memset(head.next, 0, sizeof(head.next));
 }
 
 void updateResult(char* str, int length, int counter)
 {
-	char subStr[500];
-	for(int i = 0; i < length; i++) subStr[i] = str[i];
-	subStr[length] = 0;
-
 	if(counter > resultCounter[length]){
-		strcpy(resultSet[length], subStr);
+		strncpy(resultSet[length], str, length);
 		resultCounter[length] = counter;
 	}
-	else if(counter == resultCounter[length] && strcmp(subStr, resultSet[length]) < 0){
-		strcpy(resultSet[length], subStr);
+	else if(counter == resultCounter[length] && strncmp(str, resultSet[length], length) < 0){
+		strncpy(resultSet[length], str, length);
 	}
 }
 
