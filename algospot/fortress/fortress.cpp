@@ -49,15 +49,17 @@ struct Node
 
 	int result()
 	{
+		int result = 0;
 		vector<int> heights;
 		for(auto n = nodes.begin(); n != nodes.end(); n++)
 		{
 			heights.push_back((*n)->height() + 1);
+			result = max((*n)->result(), result);
 		}
 		sort(heights.begin(), heights.end(), greater<int>());
-		if(heights.size() == 0) return 0;
-		if(heights.size() == 1) return heights[0];
-		return heights[0] + heights[1];
+		if(heights.size() == 1) result = max(result, heights[0]);
+		if(heights.size() > 1) result = max(result, heights[0] + heights[1]);
+		return result;
 	}
 };
 
