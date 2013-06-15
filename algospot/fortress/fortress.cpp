@@ -20,11 +20,17 @@ struct Node
 
 	void insert(Node* node)
 	{
-		for(auto n = nodes.begin(); n != nodes.end(); n++)
+		for(int i = 0; i < nodes.size(); i++)
 		{
-			if((*n)->in(node))
+			if(nodes[i]->in(node))
 			{
-				(*n)->insert(node);
+				nodes[i]->insert(node);
+				return;
+			}
+			else if(node->in(nodes[i]))
+			{
+				node->insert(nodes[i]);
+				nodes[i] = node;
 				return;
 			}
 		}
@@ -56,8 +62,10 @@ struct Node
 			heights.push_back((*n)->height() + 1);
 			result = max((*n)->result(), result);
 		}
+		if(heights.size() == 0) return 0;
+
 		sort(heights.begin(), heights.end(), greater<int>());
-		if(heights.size() == 1) result = max(result, heights[0]);
+		result = max(result, heights[0]);
 		if(heights.size() > 1) result = max(result, heights[0] + heights[1]);
 		return result;
 	}
