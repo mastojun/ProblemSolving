@@ -40,7 +40,7 @@ struct Node
 
 	bool in(Node* node)
 	{
-		return sqrt(pow(node->x - x, 2) + pow(node->y - y, 2)) + node->r < r;
+		return sqrt(pow(node->x - x, 2) + pow(node->y - y, 2)) < r;
 	}
 
 	int height()
@@ -62,11 +62,11 @@ struct Node
 			heights.push_back((*n)->height() + 1);
 			result = max((*n)->result(), result);
 		}
-		if(heights.size() == 0) return 0;
 
 		sort(heights.begin(), heights.end(), greater<int>());
-		result = max(result, heights[0]);
+		if(heights.size() == 1) result = max(result, heights[0]);
 		if(heights.size() > 1) result = max(result, heights[0] + heights[1]);
+
 		return result;
 	}
 };
