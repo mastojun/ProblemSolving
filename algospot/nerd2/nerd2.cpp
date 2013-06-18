@@ -18,14 +18,19 @@ bool canInsert(int p, int q)
 
 void removeNoNerds(int p, int q)
 {
-	for(auto itr = nerds.lower_bound(p); itr != nerds.begin(); --itr){
-		if(itr == nerds.end()) continue;
-		if(itr->first >= p) continue;
-		if(itr->second < q){
-			nerds.erase(itr);
-		}
-		else break;
+	auto itr_last = nerds.lower_bound(p);
+	auto itr_first = itr_last;
+
+	if(itr_first == nerds.begin()) return;
+
+	for(--itr_first; itr_first != nerds.begin(); --itr_first)
+	{
+		if(itr_first->second >= q) break;
 	}
+
+	if(itr_first->second >= q) ++itr_first;
+
+	nerds.erase(itr_first, itr_last);
 }
 
 int main()
@@ -47,7 +52,6 @@ int main()
 				removeNoNerds(p, q);
 				nerds.insert(make_pair(p, q));
 			}
-
 			result += nerds.size();
 		}
 		printf("%d\n", result);
