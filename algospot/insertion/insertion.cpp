@@ -4,8 +4,16 @@
 using namespace std;
 
 set<int> num;
+set<int> deletedNum;
 int order[50000];
 int result[50000];
+
+struct Node{
+	int number;
+
+	Node* left;
+	Node* right;
+};
 
 int main()
 {
@@ -17,6 +25,7 @@ int main()
 	{
 		scanf("%d", &N);
 		num.clear();
+		deletedNum.clear();
 
 		for(int i = 0; i < N; i++)
 		{
