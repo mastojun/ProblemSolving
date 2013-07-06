@@ -4,7 +4,7 @@
 using namespace std;
 
 int C, n;
-char word[201][30];
+char word[1001][30];
 
 char dic[26][26];
 
