@@ -27,7 +27,7 @@ void dfs(int idx, int value)
 			{
 				dfs(i, firstIdx);
 			}
-			else if(firstIdx == i)
+			else if(firstIdx == visited[i])
 			{
 				hasCycle = true;
 				return;
