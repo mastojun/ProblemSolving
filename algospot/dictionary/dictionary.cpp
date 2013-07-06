@@ -15,12 +15,6 @@ bool hasCycle;
 
 void dfs(int idx, int value)
 {
-	if(idx == value)
-	{
-		hasCycle = true;
-		return;
-	}
-
 	int firstIdx = value == -1 ? idx : value;
 	bool firstVisited = visited[idx] == -1;
 
@@ -29,7 +23,15 @@ void dfs(int idx, int value)
 	{
 		if(dic[idx][i])
 		{
-			dfs(i, firstIdx);
+			if(visited[i] == -1)
+			{
+				dfs(i, firstIdx);
+			}
+			else if(firstIdx == i)
+			{
+				hasCycle = true;
+				return;
+			}
 		}
 	}
 
