@@ -21,6 +21,8 @@ void dfs(int idx, int value)
 		return;
 	}
 
+	bool firstVisited = visited[idx] == -1;
+
 	visited[idx] = value;
 	for(int i = 0; i < 26; i++)
 	{
@@ -29,7 +31,8 @@ void dfs(int idx, int value)
 			dfs(i, value);
 		}
 	}
-	result[resultIdx++] = idx;
+
+	if(firstVisited) result[resultIdx++] = idx;
 }
 
 int main()
