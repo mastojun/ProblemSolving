@@ -1,10 +1,7 @@
-#include <iostream>
-#include <cstdio>
-#include <cstdlib>
-#include <cstring>
-#include <vector>
-
-using namespace std;
+//from JMBOOK
+//
+// treap(tree + heap) algorithm
+//  randomized binary search tree
 
 typedef int KeyType; // operator < 가 구현되어 있어야함
 
@@ -18,7 +15,7 @@ struct Node{
 								size(1), left(NULL), right(NULL){
 	}
 
-	void setLeft(Node* newLeft){left = newLeft; calcSize();}
+	void setLeft(Node* newNode){left = newLeft; calcSize();}
 	void setRight(Node* newRight){right = newRight; calcSize();}
 
 	void calcSize(){
@@ -107,39 +104,4 @@ int countLessThan(Node* root, KeyType key){
 	int ls = (root->left ? root->left->size : 0);
 	return ls + 1 + countLessThan(root->right, key);
 }
-
-int C, N;
-int order[50000];
-
-int main()
-{
-	scanf("%d", &C);
-
-	while(C --> 0){
-		scanf("%d", &N);
-
-		Node* root = NULL;
-		for(int i = 1; i <= N; i++){
-			root = insert(root, new Node(i));
-		}
-
-		for(int i = 0; i < N; i++){
-			scanf("%d", order+i);
-		}
-
-		vector<int> result;
-		for(int i = N-1; i >= 0; i--){
-			Node* n = kth(root, i - order[i] + 1);
-			result.push_back(n->key);
-			root = erase(root, n->key);
-		}
-		for(int i = N-1; i >= 0; i--){
-			printf("%d%c", result[i], i ? ' ' : '\n');
-		}
-	}
-
-	return 0;
-}
-
-
 
