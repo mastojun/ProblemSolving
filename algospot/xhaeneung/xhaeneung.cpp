@@ -26,7 +26,7 @@ int convert(char* num)
 	{
 		if(strcmp(num, nums[i]) == 0) return i;
 	}
-	return -1;
+	return -987654321;
 }
 
 int cal(int a, char op, int b)
