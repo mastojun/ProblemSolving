@@ -13,9 +13,8 @@ char result[26];
 int resultIdx;
 bool hasCycle;
 
-void dfs(int idx, int value)
+void dfs(int idx, int firstIdx)
 {
-	int firstIdx = value == -1 ? idx : value;
 	bool firstVisited = visited[idx] == -1;
 
 	visited[idx] = firstIdx;
@@ -35,7 +34,11 @@ void dfs(int idx, int value)
 		}
 	}
 
-	if(firstVisited) result[resultIdx++] = idx;
+	if(firstVisited)
+	{
+		result[resultIdx++] = idx;
+		visited[idx] = 100;
+	}
 }
 
 int main()
@@ -72,7 +75,7 @@ int main()
 		{
 			if(visited[i] == -1)
 			{
-				dfs(i, -1);
+				dfs(i, i);
 			}
 		}
 
