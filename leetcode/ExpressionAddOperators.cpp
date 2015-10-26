@@ -1,7 +1,6 @@
 /**
- * T!L!E!
- * 4^n 으로 모든 수식을 만든 다음에 stack으로 계산기 품
- * 입력 : "3456237490", 9191 에 대해서 TLE 받음
+ * stl stack을 사용하지 않고 간단한 배열로 처리함
+ * 내 pc기준으로 기존 소스보다 두배정도 빨라짐 (orz..)
  */
 class Solution {
 public:
@@ -13,9 +12,11 @@ public:
 	}
 	vector<string> addOperators(string num, int target) {
 		vector<string> result;
-		string blank_num(2*num.length() - 1, ' ');
-		for(int i = 0; i < num.length(); i++) {
-		    blank_num[i*2] = num[i];
+		if(num.length() == 0) return result;
+
+		string blank_num(2 * num.length() - 1, ' ');
+		for (int i = 0; i < num.length(); i++) {
+			blank_num[i * 2] = num[i];
 		}
 		solve(result, blank_num, 1, target);
 		return result;
@@ -25,73 +26,73 @@ private:
 	void solve(vector<string>& result, string& num, int pos, int target) {
 		if (pos >= num.size()) {
 			if (isSame(num, target)) {
-			    string r;
-			    for(auto c : num) {
-			        if(c == ' ') continue;
-			        r += c;
-			    }
-			    result.push_back(r);
+				string r;
+				for (auto c : num) {
+					if (c == ' ') continue;
+					r += c;
+				}
+				result.push_back(r);
 			}
 			return;
 		}
 
 		int opIndex = 0;
 		for (; opIndex < 4; opIndex++) {
-		    num[pos] = operators[opIndex];
+			num[pos] = operators[opIndex];
 			solve(result, num, pos + 2, target);
 		}
 	}
 
 	bool isSame(string formula, int target) {
-		stack<int> nums;
-		stack<char> oper;
 
-		int num = 0;
+		int num[3];
+		int numIdx = 0;
+		int op[2];
+		int opIdx = 0;
+
+		int n;
 		int len = 0;
 		for (int i = 0; i < formula.length(); i++) {
 			switch (formula[i]) {
 			case '-':
 			case '+':
-				nums.push(num);
-				num = 0;
+				num[numIdx++] = n;
+				n = 0;
 				len = 0;
-				while (oper.size() > 0 && nums.size() > 1) {
-					int right = nums.top(); nums.pop();
-					int left = nums.top(); nums.pop();
-					char op = oper.top(); oper.pop();
-					nums.push(cal(left, op, right));
+				while (opIdx > 0) {
+					int right = num[--numIdx];
+					int left = num[--numIdx];
+					num[numIdx++] = cal(left, op[--opIdx], right);
 				}
-				oper.push(formula[i]);
+				op[opIdx++] = formula[i];
 				break;
 			case '*':
-				nums.push(num);
-				num = 0;
+				num[numIdx++] = n;
+				n = 0;
 				len = 0;
-				while (oper.size() > 0 && oper.top() == '*' && nums.size() > 1) {
-					int right = nums.top(); nums.pop();
-					int left = nums.top(); nums.pop();
-					char op = oper.top(); oper.pop();
-					nums.push(cal(left, op, right));
+				while (opIdx > 0 && op[opIdx - 1] == '*') {
+					int right = num[--numIdx];
+					int left = num[--numIdx];
+					num[numIdx++] = cal(left, op[--opIdx], right);
 				}
-				oper.push(formula[i]);
+				op[opIdx++] = formula[i];
 				break;
 			case ' ':
-			    break;
+				break;
 			default:
-				num *= 10;
-				num += formula[i] - '0';
+				n *= 10;
+				n += formula[i] - '0';
 				len++;
-				if (len > 1 && num < 10) return false;
+				if (len > 1 && n < 10) return false;
 			}
 		}
-		nums.push(num);
-		while (oper.size() > 0 && nums.size() > 1) {
-			int right = nums.top(); nums.pop();
-			int left = nums.top(); nums.pop();
-			char op = oper.top(); oper.pop();
-			nums.push(cal(left, op, right));
+		num[numIdx++] = n;
+		while (opIdx > 0) {
+			int right = num[--numIdx];
+			int left = num[--numIdx];
+			num[numIdx++] = cal(left, op[--opIdx], right);
 		}
-		return nums.top() == target;
+		return num[0] == target;
 	}
 
 	int cal(int left, char op, int right) {
@@ -102,4 +103,3 @@ private:
 		return left * right;
 	}
 };
-
