@@ -6,28 +6,39 @@
 class Solution {
 public:
 	Solution() {
-		operators.push_back("+");
-		operators.push_back("*");
-		operators.push_back("-");
-		operators.push_back("");
+		operators.push_back('+');
+		operators.push_back('*');
+		operators.push_back('-');
+		operators.push_back(' ');
 	}
 	vector<string> addOperators(string num, int target) {
 		vector<string> result;
-		solve(result, num, 0, target);
+		string blank_num(2*num.length() - 1, ' ');
+		for(int i = 0; i < num.length(); i++) {
+		    blank_num[i*2] = num[i];
+		}
+		solve(result, blank_num, 1, target);
 		return result;
 	}
 private:
-	vector<string> operators;
-	void solve(vector<string>& result, string num, int pos, int target) {
+	vector<char> operators;
+	void solve(vector<string>& result, string& num, int pos, int target) {
 		if (pos >= num.size()) {
-			if (isSame(num, target)) result.push_back(num);
+			if (isSame(num, target)) {
+			    string r;
+			    for(auto c : num) {
+			        if(c == ' ') continue;
+			        r += c;
+			    }
+			    result.push_back(r);
+			}
 			return;
 		}
 
 		int opIndex = 0;
-		if (pos == 0 || pos + 1 > num.size()) opIndex = 3;
 		for (; opIndex < 4; opIndex++) {
-			solve(result, num.substr(0, pos) + operators[opIndex] + num.substr(pos), pos + (opIndex == 3 ? 1 : 2), target);
+		    num[pos] = operators[opIndex];
+			solve(result, num, pos + 2, target);
 		}
 	}
 
@@ -64,6 +75,8 @@ private:
 				}
 				oper.push(formula[i]);
 				break;
+			case ' ':
+			    break;
 			default:
 				num *= 10;
 				num += formula[i] - '0';
