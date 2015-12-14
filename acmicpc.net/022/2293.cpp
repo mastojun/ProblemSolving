@@ -5,23 +5,7 @@ using namespace std;
 
 int n, k;
 int coins[100];
-int dp[10001][100];
-
-int solve(int money, int coinIdx) {
-    if(money == 0) return 1;
-    if(money < 0) return 0;
-
-    int& result = dp[money][coinIdx];
-    if(result != -1) return result;
-
-    result = 0;
-
-    for (int i = coinIdx; i < n; i++) {
-        result += solve(money - coins[i], i);
-    }
-
-    return result;
-}
+int dp[10001];
 
 int main() {
     cin >> n >> k;
@@ -30,9 +14,14 @@ int main() {
         cin >> coins[i];
     }
 
-    memset(dp, -1, sizeof(dp));
+    dp[0] = 1;
+    for (int i = 0; i < n; i++) {
+        for(int j = coins[i]; j <= k; j++) {
+            dp[j] += dp[j - coins[i]];
+        }
+    }
 
-    cout << solve(k, 0) << endl;
+    cout << dp[k] << endl;
 
     return 0;
 }
