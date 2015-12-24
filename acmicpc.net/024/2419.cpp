@@ -7,15 +7,15 @@ using namespace std;
 
 int n, m;
 int candy[301];
-int leftDp[301][301];
-int rightDp[301][301];
+int leftDp[302][302];
+int rightDp[302][302];
 
 int right(int l, int r, int remain);
 
 int left(int l, int r, int remain) {
 	if (remain == 0) return 0;
 
-	int& result = leftDp[l][r];
+	int& result = leftDp[l + 1][r];
 	if (result != -1) return result;
 	result = INT_MAX;
 	if (l > 0) {
@@ -31,7 +31,7 @@ int left(int l, int r, int remain) {
 int right(int l, int r, int remain) {
 	if (remain == 0) return 0;
 
-	int& result = rightDp[l][r];
+	int& result = rightDp[l + 1][r];
 	if (result != -1) return result;
 	result = INT_MAX;
 	if (r < n) {
@@ -56,7 +56,7 @@ int main() {
 	sort(candy, candy + n + 1);
 
 	int zeroIndex = 0;
-	for (int i = 0; i < n; i++) {
+	for (int i = 0; i <= n; i++) {
 		if (candy[i] == 0) {
 			zeroIndex = i;
 			break;
