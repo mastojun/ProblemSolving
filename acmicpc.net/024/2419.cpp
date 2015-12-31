@@ -1,3 +1,6 @@
+/**
+ * http://www.csc.kth.se/contest/boi/beetle-spoiler.pdf
+ */
 #include <cstdio>
 #include <algorithm>
 #include <climits>
