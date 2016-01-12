@@ -6,17 +6,18 @@ int N;
 int P;
 int boxes[100000];
 
-int solve() {
+long long solve() {
+  long long result = 0;
   long long sum = 0;
   for (int left = 0, right = 0; right < N; right++) {
     sum += boxes[right];
     while (sum > P) {
       sum -= boxes[left++];
     }
-    sum += right - left;
+    result += right - left + 1;
   }
 
-  return sum;
+  return result;
 }
 
 int main() {
@@ -28,7 +29,7 @@ int main() {
       scanf("%d", boxes + i);
     }
 
-    printf("Case #%d: %d\n", C, solve());
+    printf("Case #%d: %lld\n", C, solve());
   }
 
   return 0;
