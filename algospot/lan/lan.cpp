@@ -2,7 +2,8 @@
 #include <cmath>
 
 #include <tuple>
-#include <queue>
+#include <vector>
+#include <algorithm>
 
 using namespace std;
 
@@ -80,24 +81,25 @@ int main() {
       scanf("%d %d", &l, &r);
       disjoint.merge(l, r);
     }
-    priority_queue<tuple<double, int, int>> dists;
+    vector<tuple<double, int, int>> dists;
 
     for (int i = 0; i < N; i++) {
       for (int j = i + 1; j < N; j++) {
         if (disjoint.sameParent(i, j)) continue;
-        dists.push(make_tuple(-dist(i, j), i, j));
+        dists.push_back(make_tuple(dist(i, j), i, j));
       }
     }
 
+    sort(dists.begin(), dists.end());
+
     double result = 0;
-    while (!dists.empty()) {
-      double dist = -get<0>(dists.top());
-      int from = get<1>(dists.top());
-      int to = get<2>(dists.top());
-      dists.pop();
+    for (auto dist : dists) {
+      double d = get<0>(dist);
+      int from = get<1>(dist);
+      int to = get<2>(dist);
       if (disjoint.sameParent(from, to)) continue;
 
-      result += dist;
+      result += d;
       disjoint.merge(from, to);
     }
 
